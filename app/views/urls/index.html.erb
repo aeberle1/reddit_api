@@ -1,0 +1,31 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Urls</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Url</th>
+      <th>Reddit</th>
+      <th colspan="2"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @urls.each do |url| %>
+      <tr>
+        <td><%= url.url %></td>
+        <td><%= url.reddit_engs %></td>
+<!--         <td><%= link_to 'Show', url %></td>
+        <td><%= link_to 'Edit', edit_url_path(url) %></td>
+ -->
+        <td><%= link_to 'Delete', url, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Update Reddit', update_engs_url_path(url), method: :update_engs %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Url', new_url_path %>
