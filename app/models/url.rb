@@ -12,12 +12,12 @@ class Url < ApplicationRecord
 
     begin
       response = RestClient.get(reddit_api_url)
-      # response = HTTParty.get(reddit_api_url)
-      # response = Net::HTTP.get(URI.parse(reddit_api_url))
       result = JSON.parse(response)
-      resp = result["data"]["children"]
-      engagements = (0...resp.count).map { |n| resp[n]["data"]["ups"] + resp[n]["data"]["num_comments"] + 1 }.reduce(:+)
-      return engagements
+      eng_data = result["data"]["children"]
+      engagements = (0...eng_data.count).map { |n| eng_data[n]["data"]["ups"] + eng_data[n]["data"]["num_comments"] + 1 }.reduce(:+)
+      engagement_data = (0...eng_data.count).map { |n| [eng_data[n]["data"]["name"], eng_data[n]["data"]["ups"], eng_data[n]["data"]["num_comments"]] }
+      Rails.logger.info "engagement_data: #{engagement_data}"
+      return engagements, engagement_data
     rescue =>e
       @error = e.message
     end

@@ -4,7 +4,7 @@ class UrlsController < ApplicationController
   # GET /urls
   # GET /urls.json
   def index
-    @urls = Url.all
+    @urls = Url.all.order(:url)
   end
 
   # GET /urls/1
@@ -63,9 +63,10 @@ class UrlsController < ApplicationController
 
   def update_engs
 
-    engagements = @url.lookup_stats(@url.url)
+    engagements, engagement_data = @url.lookup_stats(@url.url)
     Rails.logger.info "Engagements: #{engagements}"
     @url.reddit_engs = engagements
+    @url.eng_data = engagement_data
     @url.save
     respond_to do |format|
       format.html { redirect_to urls_url, notice: 'Url was successfully updated.' }
