@@ -63,20 +63,13 @@ class UrlsController < ApplicationController
 
   def update_engs
 
-    @url.lookup_stats(@url.url)
-
-    if !@engagements.nil? && @engagements > @url.reddit_engs 
-      @url.reddit_engs = @engagements
-      @url.update(url_params)
-      respond_to do |format|
-        format.html { redirect_to urls_url, notice: 'Url was successfully updated.' }
-        format.json { head :no_content }
-      end
-    else
-      respond_to do |format|
-        format.html { redirect_to urls_url, notice: 'Update not necessary.' }
-        format.json { head :no_content }
-      end      
+    engagements = @url.lookup_stats(@url.url)
+    Rails.logger.info "Engagements: #{engagements}"
+    @url.reddit_engs = engagements
+    @url.save
+    respond_to do |format|
+      format.html { redirect_to urls_url, notice: 'Url was successfully updated.' }
+      format.json { head :no_content }
     end
   end
 
