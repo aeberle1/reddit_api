@@ -1,31 +1,78 @@
 <p id="notice"><%= notice %></p>
+<p id="error"><%= @error %></p>
 
-<%= @engagement_data %>
+<div id="container">
+  <script>
+    $(function () {
+      $('#container').highcharts({
+        chart: {
+            type: 'bar'
+        },
+        title: {
+            text: 'Fruit Consumption'
+        },
+        xAxis: {
+            categories: ['Apples', 'Bananas', 'Oranges']
+        },
+        yAxis: {
+            title: {
+                text: 'Fruit eaten'
+            }
+        },
+        series: [{
+            name: 'Jane',
+            data: [1, 0, 4]
+        }, {
+            name: 'John',
+            data: [5, 7, 3]
+        }]
+      });
+    });
+  </script>
+</div>
+
+
 
 <h1>Urls</h1>
 
 <table>
   <thead>
     <tr>
+      <th></th>
+      <th>Source</th>
+      <th>Pub Date</th>
       <th>Url</th>
       <th>Reddit</th>
-      <th colspan="2"></th>
+      <th>BuzzSumo</th>
+      <th colspan="4"></th>
     </tr>
   </thead>
 
-  <tbody>
-    <% @urls.each do |url| %>
+  <%= form_tag(bulk_update_path, method: :put)  do %> 
+    <tbody>
+
+      <% for url in @urls %>
+        <tr>
+          <td><%= check_box_tag 'url_ids[]', url.id %></td>
+          <td><%= URI(url.url.to_s).host rescue url.url.match("//(.+?)/")[1] rescue "?" %></td>
+          <td><%= url.get_url_metadata.strftime("%m/%d/%y") rescue '' %></td>
+          <td><%= link_to(url.url, url.url) %></td>
+          <td><%= url.reddit %></td>
+          <td><%= url.buzzsumo %></td>
+          <!-- <td><%= url.reddit_data %></td> -->
+          <!-- <td><%= link_to 'Show', url %></td> -->
+          <td><%= link_to 'Edit', edit_url_path(url) %></td>
+          <td><%= link_to 'Delete', url, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <!-- <td><%= link_to 'Update Reddit', update_engs_url_path(url), method: :update_engs %></td> -->
+        </tr>
+      <% end %>
+
       <tr>
-        <td><%= url.url %></td>
-        <td><%= url.reddit_engs %></td>
-<!--         <td><%= link_to 'Show', url %></td>
-        <td><%= link_to 'Edit', edit_url_path(url) %></td>
- -->
-        <td><%= link_to 'Delete', url, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-        <td><%= link_to 'Update Reddit', update_engs_url_path(url), method: :update_engs %></td>
+        <td colspan="6"></td>
+        <td><%= submit_tag 'Update Stats' %></td>      
       </tr>
-    <% end %>
-  </tbody>
+    </tbody>
+  <% end %>
 </table>
 
 <br>

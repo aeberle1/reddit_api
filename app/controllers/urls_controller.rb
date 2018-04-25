@@ -1,5 +1,5 @@
 class UrlsController < ApplicationController
-  before_action :set_url, only: [:show, :edit, :update, :destroy, :update_engs]
+  before_action :set_url, only: [:show, :edit, :update, :destroy, :update_single_url]
 
   # GET /urls
   # GET /urls.json
@@ -61,13 +61,30 @@ class UrlsController < ApplicationController
     end
   end
 
-  def update_engs
+  def bulk_update
 
-    engagements, engagement_data = @url.lookup_stats(@url.url)
-    Rails.logger.info "Engagements: #{engagements}"
-    @url.reddit_engs = engagements
-    @url.eng_data = engagement_data
+    select_urls = Url.where(id: [params[:url_ids]])
+    select_urls.each do |u|
+      reddit, reddit_data = u.lookup_reddit
+      u.reddit = reddit.to_i if reddit.to_i > u.reddit
+      u.reddit_data = reddit_data
+      u.save
+    end
+
+    respond_to do |format|
+      format.html { redirect_to urls_url, notice: 'Url was successfully updated.' }
+      format.json { head :no_content }
+    end
+
+  end
+
+  def update_single_url
+
+    reddit, reddit_data  = @url.lookup_reddit
+    @url.reddit = reddit.to_i if reddit.to_i > @url.reddit
+    @url.reddit_data = reddit_data
     @url.save
+
     respond_to do |format|
       format.html { redirect_to urls_url, notice: 'Url was successfully updated.' }
       format.json { head :no_content }
@@ -82,6 +99,6 @@ class UrlsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def url_params
-      params.require(:url).permit(:url, :reddit_engs)
+      params.require(:url).permit(:url, :reddit, :reddit_data, :buzzsumo)
     end
 end

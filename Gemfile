@@ -35,9 +35,13 @@ gem 'jbuilder', '~> 2.5'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
+gem 'jquery-rails'
+gem 'jquery-ui-rails'
 gem 'json'
 gem 'rest-client'
 gem 'oauth2'
+gem 'bootstrap'
+gem 'httparty'
 
 
 group :development, :test do

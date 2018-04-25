@@ -10,14 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180419211426) do
+ActiveRecord::Schema.define(version: 20180421152001) do
 
   create_table "urls", force: :cascade do |t|
-    t.string "url"
-    t.integer "reddit_engs"
+    t.text "url"
+    t.integer "reddit", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "eng_data"
+    t.string "reddit_data"
+    t.string "buzzsumo"
   end
 
 end

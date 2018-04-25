@@ -13,12 +13,17 @@
 
   <div class="field">
     <%= form.label :url %>
-    <%= form.text_field :url, id: :url_url %>
+    <%= form.text_field :url, id: :url_url, size: "100" %>
   </div>
 
   <div class="field">
-    <%= form.label :reddit_engs %>
-    <%= form.number_field :reddit_engs, id: :url_reddit_engs %>
+    <%= form.label :reddit %>
+    <%= form.number_field :reddit, id: :url_reddit %>
+  </div>
+
+  <div class="field">
+    <%= form.label :buzzsumo %>
+    <%= form.text_field :buzzsumo, id: :url_buzzsumo %>
   </div>
 
   <div class="actions">
