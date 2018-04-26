@@ -2,34 +2,14 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
-# $(document).ready ->
-#   $ ->
-#     $('#container').highcharts
-#       chart: type: 'bar'
-#       title: text: 'Fruit Consumption'
-#       xAxis: categories: [
-#         'Apples'
-#         'Bananas'
-#         'Oranges'
-#       ]
-#       yAxis: title: text: 'Fruit eaten'
-#       series: [
-#         {
-#           name: 'Jane'
-#           data: [
-#             1
-#             0
-#             4
-#           ]
-#         }
-#         {
-#           name: 'John'
-#           data: [
-#             5
-#             7
-#             3
-#           ]
-#         }
-#       ]
-#     return
-#   return
+$(document).ready ->
+  console.log("hello")
+  $ ->
+    $.getJSON "http://localhost:3000/api/v2/charts/get_chart_data.json?api_token=2_-yCD0x0z2U--Afv3ULTw", (chart_data) ->
+      console.log("url json data", chart_data)
+      $('#twitter_shares').highcharts
+        chart: type: 'area', zoomType: 'x'
+        title: text: 'Twitter Shares'
+        xAxis: type: 'datetime'
+        yAxis: title: text: 'Daily Volume of Shares'
+        series: [chart_data]
