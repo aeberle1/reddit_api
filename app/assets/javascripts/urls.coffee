@@ -5,7 +5,7 @@
 $(document).ready ->
   console.log("hello")
   $ ->
-    $.getJSON "http://localhost:3000/api/v2/chart/get_chart_data.json?api_token=2_-yCD0x0z2U--Afv3ULTw", (chart_data) ->
+    $.getJSON "https://app.shareablemetrics.com/api/v2/chart/get_chart_data.json?api_token=2_-yCD0x0z2U--Afv3ULTw", (chart_data) ->
       console.log("url json data", chart_data)
       $('#twitter_shares').highcharts
         chart: type: 'area', zoomType: 'x'
